@@ -13,14 +13,16 @@ public class Server{
 
         try {
 
-            while(!serverSocket.isClosed()) {
+            while(!serverSocket.isClosed()) {  //While there is a connection to the client
 
-                Socket socket = serverSocket.accept();
-                System.out.println("A new client has connected");
+
+
+                Socket socket = serverSocket.accept(); //Listens for a connection to be made to this socket and accepts it.
+                System.out.println("A new client has connected"); //Announces to the chat a new client connected
                 ClientHandler clientHandler = new ClientHandler(socket);
 
-                Thread thread = new Thread(clientHandler);
-                thread.start();
+                Thread thread = new Thread(clientHandler); //A thread is created for each new client
+                thread.start(); //Thread is started
 
             }
 
@@ -28,7 +30,7 @@ public class Server{
 
         }
     }
-    public  void closeServerSocket(){
+    public  void closeServerSocket(){ //Used to end connections
 
         try{
 
@@ -46,8 +48,8 @@ public class Server{
 
     public static void main(String[] args) throws IOException {
 
-        ServerSocket serverSocket = new ServerSocket(1234);
-        Server server = new Server(serverSocket);
+        ServerSocket serverSocket = new ServerSocket(1234); //Creates a server socket, bound to the specified port.
+        Server server = new Server(serverSocket); // New Server object created passing through the serverSocket
         server.startServer();
 
     }

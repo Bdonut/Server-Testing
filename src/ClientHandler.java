@@ -3,14 +3,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ClientHandler implements Runnable{
-
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String clientUsername;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket) { //ClientHandler Class Constructor
         try{
         this.socket = socket;
         this.bufferedWriter = new BufferedWriter((new OutputStreamWriter(socket.getOutputStream())));
@@ -28,7 +27,7 @@ public class ClientHandler implements Runnable{
     public void run() {
         String messageFromClient;
 
-        while( socket.isConnected()){
+        while( socket.isConnected()){ //This section of code is used to read the messages which are sent by the other clients
             try{
                 messageFromClient = bufferedReader.readLine();
                 broadcastMessage(messageFromClient);
@@ -40,7 +39,7 @@ public class ClientHandler implements Runnable{
         }
     }
 
-    public void broadcastMessage(String messageToSend){
+    public void broadcastMessage(String messageToSend){ //Method used to send messages
         for (ClientHandler clientHandler: clientHandlers){
             try{
                 if(!clientHandler.clientUsername.equals(clientUsername)) {
@@ -53,12 +52,12 @@ public class ClientHandler implements Runnable{
             }
         }
     }
-    public void removeClientHandler(){
+    public void removeClientHandler(){ //Shuts down the client handler after the client disconects
         clientHandlers.remove(this);
         broadcastMessage("Server: "+ clientUsername + " has left the chat");
     }
 
-    public void closeEverything(Socket socket, BufferedReader bufferedreader, BufferedWriter bufferedwriter){
+    public void closeEverything(Socket socket, BufferedReader bufferedreader, BufferedWriter bufferedwriter){ // This method is used to close socket, reader and writer.
         removeClientHandler();
         try{
             if( bufferedreader != null){

@@ -8,7 +8,7 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private String username;
 
-    public Client(Socket socket, String username) {
+    public Client(Socket socket, String username) { //Constructor for the client
         try{
             this.socket = socket;
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -18,7 +18,7 @@ public class Client {
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
     }
-    public void sendMessage(){
+    public void sendMessage(){ //Method used to send messages
         try{
             bufferedWriter.write(username);
             bufferedWriter.newLine();
@@ -35,8 +35,8 @@ public class Client {
             closeEverything(socket,bufferedReader,bufferedWriter);
         }
     }
-    public void listenForMessage(){
-        new Thread(new Runnable() {
+    public void listenForMessage(){ //Method used for listening to messages
+        new Thread(new Runnable() { //Thread is started to make sure the program isnt stuck in an infinite loop waiting for messages.
             @Override
             public void run() {
                 String msgFromGroupChat;
